@@ -1,0 +1,12 @@
+<%= attachment_image_tag(@item, :image, fallback: "no-image-icon.jpg", size:'200x200') %><br>
+商品名：<%= @item.name %><br>
+商品説明：<%= @item.description %><br>
+<% @sumup = @item.tax_excluded_price + @item.tax_excluded_price* 0.1%>
+税込価格：<%= @sumup.round %>円<br>
+
+<%= form_with model: @cart_item, url: "/cart_items", local:true do |f| %>
+  <%= f.label :数量 %>
+  <%= f.text_field :amount %>
+  <%= f.hidden_field :item_id, :value => @item.id %>
+<%= f.submit "カートに入れる" %>
+<% end %>

@@ -1,0 +1,19 @@
+<table border="1">
+  <tr><!-- 行1（見出し）-->
+    <th>会員ID</th> <th>氏名</th> <th>メールアドレス</th> <th>ステータス</th>
+  </tr>
+<% @end_users.each do |end_users| %>
+  <tr><!-- 行2 -->
+    <td><%= end_users.id %></td>
+    <td><%= end_users.last_name %><%= end_users.first_name %></td>
+    <td><%= end_users.email %></td>
+    <td>
+     <% if end_users.is_unsubscribed %>
+      退会済み
+     <% else %>
+      有効
+     <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>

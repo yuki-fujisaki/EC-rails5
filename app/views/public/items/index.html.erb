@@ -1,0 +1,11 @@
+<% @items.each do |i| %>
+<div>
+  商品名：<%= i.name %>
+<div>
+  <%= attachment_image_tag i, :image, size:'200x200'%>
+</div>
+  商品単価：<%= i.tax_excluded_price.round %>円<br>
+  ジャンル名：<%= i.genre.name %><br>
+  <%= link_to "詳細へ", item_path(i) %>
+</div>
+<% end %>

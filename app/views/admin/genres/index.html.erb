@@ -1,0 +1,12 @@
+<%= form_with model: @genre, url: "/admin/genres", local:true do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  <%= f.submit %>
+<% end %>
+
+<% @genres.each do |g| %>
+<div>
+  <%= g.name %>
+  <%= link_to '編集', edit_admin_genre_path(g) %>
+</div>
+<% end %>

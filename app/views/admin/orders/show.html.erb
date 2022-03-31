@@ -1,0 +1,29 @@
+購入者：<%= @order.end_user.full_name %><br>
+注文日：<%= @order.created_at.to_s(:datetime_jp)%><br>
+配送先：<%= @order.postal_code %><%= @order.address %><%= @order.name %><br>
+支払い方法：<%= @order.payment_method_i18n %><br>
+
+<%= form_with model: @order, url: "/admin/orders/#{@order.id}", local:true, method: :patch do |f| %>
+    注文ステータス：<%= f.select :sales_order_status, Order.sales_order_statuses_i18n.keys.map{|k| [I18n.t("enums.order.sales_order_status.#{k}"), k]} %>
+
+    <%= f.submit %>
+<% end %>
+
+<br>＜注文商品＞<br>
+<% @order_sum = 0 %>
+<% @order.order_details.each do |order_detail|%>
+    商品名：<%= order_detail.item.name %><br>
+    単価（税込）<%= order_detail.tax_included_price %><br>
+    注文個数：<%= order_detail.quantity %><br>
+    小計：<%= order_detail.tax_included_price*order_detail.quantity %><br>
+    <% @order_sum += order_detail.tax_included_price*order_detail.quantity %>
+    <%= form_with model: order_detail, url: "/admin/order_details/#{order_detail.id}", local:true, method: :patch do |f| %>
+        制作ステータス：<%= f.select :production_status, OrderDetail.production_statuses_i18n.keys.map{|k| [I18n.t("enums.order_detail.production_status.#{k}"), k]} %>
+        <%= f.submit %>
+    <% end %>
+
+============================<br>
+<% end %>
+商品合計：<%= @order_sum %>円<br>
+送料：<%= @order.shipping_cost %><br>
+請求額：<%= @order.billing_amount %><br>

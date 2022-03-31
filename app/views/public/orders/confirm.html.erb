@@ -1,0 +1,48 @@
+お届け先：〒<%= @order.postal_code %>&emsp;<%= @order.address %>&emsp;<%= @order.name %><br>
+
+<% @sum = 0 %>
+<% @cart_items.each do |cart_item| %>
+<% if current_end_user.id == cart_item.end_user_id %>
+    <br>商品名：<%= cart_item.item.name %>
+<div>
+    単価(税込)：
+    <% @price = cart_item.item.tax_excluded_price* 1.1%>
+    <%= @price.round %>円
+</div>
+
+<div>
+      個数：
+       <%= cart_item.amount %>個
+</div>
+<div>
+      小計：
+       <% @price *= cart_item.amount %>
+       <%= @price.round %>円
+</div>
+       <% @sum += @price %>
+  <% end %>
+<% end %>
+<div>
+送料：
+<%= @shipping_cost %>円
+</div>
+<div>
+商品合計：
+<%= @sum.round %>円
+</div>
+<div>
+請求金額：
+<% @sum += @shipping_cost%>
+<%= @sum.round %>円
+</div>
+
+
+<%= form_with model: @order, url: orders_path, method: :post, local: true do |f| %>
+  <%= f.hidden_field :name, value: @order.name %>
+  <%= f.hidden_field :postal_code, value: @order.postal_code %>
+  <%= f.hidden_field :address, value: @order.address %>
+  <%= f.hidden_field :payment_method, value: @order.payment_method %>
+  <%= f.hidden_field :end_user_id, value: @order.end_user_id %>
+  <%= f.hidden_field :billing_amount, value: @order.billing_amount %>
+<%= f.submit '注文を確定する',data:{confirm: "注文を確定しますか?"}%>
+<% end %>

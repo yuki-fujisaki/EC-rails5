@@ -1,0 +1,2 @@
+<%= link_to '退会しない', end_users_mypage_path(@end_user) %>
+<%= link_to '退会する', withdraw_end_user_path(@end_user), method: :patch , data: { confirm: '本当に退会しますか？'}%>

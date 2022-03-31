@@ -1,0 +1,14 @@
+<% @orders.each do |o| %>
+
+  <%= link_to o.created_at.to_s(:datetime_jp), admin_order_path(o.id)  %><br>
+  <%#= xxx.updated_at.to_s(:datetime_jp) %>
+  購入者：<%= o.end_user.full_name %><br>
+
+  <% amount = 0 %>
+  <% o.order_details.each do |order_detail|%>
+    <% amount += order_detail.quantity %>
+  <% end %>
+  注文個数：<%= amount %>個<br>
+  注文ステータス：<%= o.sales_order_status_i18n %><br>
+
+<% end %>
